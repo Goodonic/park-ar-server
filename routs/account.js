@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const config = require("../config/db");
 const admin = require("firebase-admin");
 const serviceAccount = require("../serviceAccountKey.json");
+const db = require("../config/initDb")
 
 function getParkByName(name, callback)  {
     const db = admin.database();
