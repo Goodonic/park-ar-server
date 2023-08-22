@@ -8,18 +8,22 @@ const serviceAccount = require("../serviceAccountKey.json");
 const db = require("../config/initDb")
 
 function getParkByName(name, callback)  {
-    const db = admin.database();
-    db.ref(`parks/${name}`).on('value', (snapshot) => {
-        if(snapshot.val()!=null){
-            console.log("снапшот отправлен")
-            return callback(snapshot.val())
-        }
+    try {
+        db.ref(`parks/${name}`).on('value', (snapshot) => {
+            if(snapshot.val()!=null){
+                console.log("снапшот отправлен")
+                return callback(snapshot.val())
+            }
 
-        else {
-            console.log(snapshot.val(), name)
-            return callback(snapshot.val())
-        }
-    });
+            else {
+                console.log(snapshot.val(), name)
+                return callback(snapshot.val())
+            }
+        });
+    }
+    catch (err){
+        console.log(err)
+    }
 }
 
 // function getParkPassword(parkName){
@@ -34,9 +38,14 @@ function getParkByName(name, callback)  {
 //     });
 // }
 function comparePass(password, parkPassword, callback){
-    if(password == parkPassword)
-        return callback(true)
-    else return callback(false)
+    try {
+        if(password == parkPassword)
+            callback(true)
+        else return callback(false)
+    }
+    catch (err){
+        console.log(err)
+    }
 }
 
 router.post('/auth', (req, res) => {
@@ -44,27 +53,33 @@ router.post('/auth', (req, res) => {
     const password = req.body.password;
     //console.log(getParkPassword("Misovo"))
     //console.log("I am work", login, password, getParkPassword(login))
-    getParkByName(login, (user)=>{
-        if (!user) {
-            console.log(user)
-            return res.json({success: false, msg: "Пользователь не найден"})
-        }
-        else {
-            console.log(user, "Йенто логин")
-            comparePass(password, user.Admins[0], (isMatch)=>{
-                if(isMatch){
-                    const token = "JWT"+jwt.sign(user, config.secretKey, {expiresIn: 3600*24*30})
-                    console.log(user.Title)
-                    // res.json({success: true, token: "JWT"+token, name: user.Title})
-                    res.json({success:true, token: token, name: user.Title})
-                }
-                else res.json({success: false, msg: "Неверный пароль"})
-            })
-        }
-    })
+    try {
+        getParkByName(login, (user)=>{
+            if (!user) {
+                console.log(user)
+                return res.json({success: false, msg: "Пользователь не найден"})
+            }
+            else {
+                console.log(user, "Йенто логин")
+                comparePass(password, user.Admins[0], (isMatch)=>{
+                    if(isMatch){
+                        const token = "JWT"+jwt.sign(user, config.secretKey, {expiresIn: 3600*24*30})
+                        console.log(user.Title)
+                        // res.json({success: true, token: "JWT"+token, name: user.Title})
+                        return res.json({success:true, token: token, name: user.Title})
+                    }
+                    else return res.json({success: false, msg: "Неверный пароль"})
+                })
+            }
+        })
+    }
+    catch (err){
+        console.log("ACC Все упало, мы все упали" + err)
+    }
+
 })
 router.get("/admin", passport.authenticate("jwt", {sassion: false}), (req, res) =>{
-    res.send("Admin")
+
 })
 
 module.exports = router;

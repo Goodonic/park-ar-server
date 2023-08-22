@@ -36,17 +36,23 @@ router.delete('/parks/:name/Quests/:ind', (req, res) => {
     let name = url[2];
     let ind = url[4];
     // console.log("success\n", decodeURI(req.url), req.url)
-    db.ref(`parks/${name}/Quests/${ind}`).set(null, function (error) {
-        if (error) {
-            res.sendStatus(404)
-            // The write failed...
-            console.log("Failed with error: " + error)
-        } else {
-            res.sendStatus(204)
-            // The write was successful...
-            //console.log("success\n", ind)
-        }
-    })
+    try {
+        db.ref(`parks/${name}/Quests/${ind}`).set(null, function (error) {
+            if (error) {
+                //res.sendStatus(404)
+                // The write failed...
+                console.log("Failed with error: " + error)
+            } else {
+                //res.sendStatus(204)
+                // The write was successful...
+                //console.log("success\n", ind)
+            }
+        })
+    }
+    catch (err){
+        console.log("Все упало, мы все упали" + err)
+    }
+
 })
 
 router.post('/:parkName', (req, res) => {
@@ -62,7 +68,10 @@ router.post('/:parkName', (req, res) => {
         TaskName: req.body.TaskName,
     };
     console.log("Ща будет записть\n", newQuest);
-    db.ref(`parks/${name}/Quests/`).update({[newQuest.TaskName]: newQuest})
+    try {
+        db.ref(`parks/${name}/Quests/`).update({[newQuest.TaskName]: newQuest})
+    }
+   catch (err){console.log(err)}
 
     //db.ref(`parks/${name}/Quests/`).push(newQuest)
 
