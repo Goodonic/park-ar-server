@@ -36,7 +36,30 @@ router.delete('/parks/:name/ModelPark/:ind', (req, res) => {
     let name = url[2];
     let ind = url[4];
     // console.log("success\n", decodeURI(req.url), req.url)
-    db.ref(`parks/${name}/ModelPark/${ind}`).set(null, function (error) {
+    db.ref(`parks/${name}/ModelPark/${ind}/Event/Title`).set("", function (error) {
+        if (error) {
+            r
+            // The write failed...
+            console.log("Failed with error: " + error)
+        } else {
+
+            // The write was successful...
+            //console.log("success\n", ind)
+        }
+    })
+    db.ref(`parks/${name}/ModelPark/${ind}/Event/Date`).set("", function (error) {
+        if (error) {
+
+            // The write failed...
+            console.log("Failed with error: " + error)
+        } else {
+
+            // The write was successful...
+            //console.log("success\n", ind)
+        }
+    })
+
+    db.ref(`parks/${name}/ModelPark/${ind}/Event/Description`).set("", function (error) {
         if (error) {
             res.sendStatus(404)
             // The write failed...
