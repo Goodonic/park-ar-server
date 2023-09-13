@@ -7,6 +7,7 @@ const passport =require("passport");
 const account = require("./routs/account");
 const quests = require("./managers/quests")
 const events = require("./managers/events");
+const map = require("./managers/map");
 const session = require("express-session")
 const db = require("./config/initDb")
 
@@ -44,6 +45,7 @@ app.use('/account', account);
 // Получеие и удаление квестов
 app.use('/quests', quests);
 app.use('/events', events);
+app.use('/map', map);
 
 
 

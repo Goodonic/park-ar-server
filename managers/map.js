@@ -8,9 +8,9 @@ router.get('/parks/:name/ModelPark/:ind', (req, res) => {
     let url = req.url.split('/');
     let name = url[2];
     let ind = url[4];
-    db.ref(`parks/${name}/ModelPark/${ind}`).on('value',
+    db.ref(`parks/${name}/ModelPark/${ind}`).once('value',
         (snapShot)=>{
-            console.log(snapShot.val());
+            //console.log(snapShot.val());
             res.json(snapShot.val())
 
         },
@@ -36,40 +36,19 @@ router.delete('/parks/:name/ModelPark/:ind', (req, res) => {
     let name = url[2];
     let ind = url[4];
     // console.log("success\n", decodeURI(req.url), req.url)
-    db.ref(`parks/${name}/ModelPark/${ind}/Event/Title`).set("", function (error) {
-        if (error) {
-            r
-            // The write failed...
-            console.log("Failed with error: " + error)
-        } else {
+    db.ref(`parks/${name}/ModelPark/${ind}`).update({
+        "ID": '',
+        "Event/Date": '',
+        "Event/Description": '',
+        "Event/IsExit": '',
+        "Event/Title": '',
+        "Location/Latitude": '',
+        "Location/Longitude": '',
 
-            // The write was successful...
-            //console.log("success\n", ind)
-        }
-    })
-    db.ref(`parks/${name}/ModelPark/${ind}/Event/Date`).set("", function (error) {
-        if (error) {
-
-            // The write failed...
-            console.log("Failed with error: " + error)
-        } else {
-
-            // The write was successful...
-            //console.log("success\n", ind)
-        }
     })
 
-    db.ref(`parks/${name}/ModelPark/${ind}/Event/Description`).set("", function (error) {
-        if (error) {
-            res.sendStatus(404)
-            // The write failed...
-            console.log("Failed with error: " + error)
-        } else {
-            res.sendStatus(204)
-            // The write was successful...
-            //console.log("success\n", ind)
-        }
-    })
+
+
 })
 
 router.post('/:parkName', (req, res) => {
@@ -77,22 +56,20 @@ router.post('/:parkName', (req, res) => {
     let url = req.url.split('/');
     let name = url[1];
     let ind = req.body.Ind;
-    let newEvent;
+    let newObj;
 
-    newEvent = {
-        Date: req.body.Date,
-        Description: req.body.Description,
-        Title: req.body.Title,
+    newObj = {
         Lat: req.body.Lat,
         Long: req.body.Long,
+        Ind: req.body.Ind,
+        objInd: req.body.objInd,
+
     };
-    console.log("Ща будет записть\n", newEvent);
-    db.ref(`parks/${name}/ModelPark/${ind}`).update({
-        "Event/Date": newEvent.Date,
-        "Event/Title": newEvent.Title,
-        "Event/Description": newEvent.Description,
-        "Location/Latitude": newEvent.Lat,
-        "Location/Longitude": newEvent.Long,
+    console.log("Ща будет записть\n", newObj);
+    db.ref(`parks/${name}/ModelPark/${newObj.objInd}`).update({
+        "ID": newObj.Ind,
+        "Location/Latitude": newObj.Lat,
+        "Location/Longitude": newObj.Long,
     })
 
     //db.ref(`parks/${name}/Quests/`).push(newQuest)
