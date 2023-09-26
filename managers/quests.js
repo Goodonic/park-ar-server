@@ -69,9 +69,21 @@ router.post('/:parkName', (req, res) => {
     };
     console.log("Ща будет записть\n", newQuest);
     try {
-        db.ref(`parks/${name}/Quests/`).update({[newQuest.TaskName]: newQuest})
+        db.ref(`parks/${name}/Quests/${newQuest.TaskName}`).set(newQuest, function (error) {
+            if (error) {
+                //res.sendStatus(404)
+                // The write failed...
+                console.log("Failed with error: " + error)
+            } else {
+                //res.sendStatus(204)
+                // The write was successful...
+                //console.log("success\n", ind)
+            }
+        })
     }
-   catch (err){console.log(err)}
+   catch (err){
+
+        console.log(err)}
 
     //db.ref(`parks/${name}/Quests/`).push(newQuest)
 
