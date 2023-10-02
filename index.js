@@ -8,6 +8,7 @@ const account = require("./routs/account");
 const quests = require("./managers/quests")
 const events = require("./managers/events");
 const map = require("./managers/map");
+const entryMap = require("./managers/entry-map");
 const session = require("express-session")
 const db = require("./config/initDb")
 
@@ -43,9 +44,9 @@ const testObject2 =
 app.use('/account', account);
 
 // Получеие и удаление квестов
-app.use('/quests', quests);
-app.use('/events', events);
-app.use('/map', map);
-
+app.use('/route/quests', quests);
+app.use('/route/events', events);
+app.use('/route/map', map);
+app.use('/route/entryMap', entryMap);
 
 

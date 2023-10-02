@@ -30,6 +30,18 @@ router.get('/parks/:name/ModelPark/', (req, res) => {
             console.log('The read failed: ' + errorObject.name);
         })
 })
+
+router.get('/parks/:name/img', (req, res) => {
+    db.ref(`/ans/`).once('value',
+        (snapShot) => {
+        console.log(snapShot.val());
+        res.json(snapShot.val())
+        },
+        (errorObject) => {
+            console.log('The read failed: ' + errorObject.name);
+        })
+})
+
 router.delete('/parks/:name/ModelPark/:ind', (req, res) => {
     let url = decodeURI(req.url);
     url = url.split('/');
