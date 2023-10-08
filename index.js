@@ -28,22 +28,8 @@ app.listen(port, () => {
 })
 
 
-
-const testObject =
-    {
-        mainLohName: "Илья",
-        mainLohLastName: "Орехов"
-    };
-const testObject2 =
-    {
-        mainLohName: "Никита",
-        mainLohLastName: "Орехов"
-    };
-
-
 app.use('/account', account);
 
-// Получеие и удаление квестов
 app.use('/route/quests', quests);
 app.use('/route/events', events);
 app.use('/route/map', map);

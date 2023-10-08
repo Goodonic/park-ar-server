@@ -55,35 +55,48 @@ router.delete('/parks/:name/Quests/:ind', (req, res) => {
 
 })
 
-router.post('/:parkName', (req, res) => {
+// TODO Изменения
+router.post('/:parkName/:Coast/:Code/:Description/:IsStandartQuest/:TaskName', (req, res) => {
     console.log("рабоает")
     let url = req.url.split('/');
     let name = url[1];
     let newQuest;
+    // newQuest = {
+    //     Coast: Number(req.body.Coast) ,
+    //     Code: req.body.Code,
+    //     Description: req.body.Description,
+    //     IsStandartQuest: req.body.IsStandartQuest,
+    //     TaskName: req.body.TaskName,
+    // };
     newQuest = {
-        Coast: Number(req.body.Coast) ,
-        Code: req.body.Code,
-        Description: req.body.Description,
-        IsStandartQuest: req.body.IsStandartQuest,
-        TaskName: req.body.TaskName,
+        Coast: Number(url[2]) ,
+        Code: url[3],
+        Description: url[4],
+        IsStandartQuest: url[5],
+        TaskName: url[6],
     };
     console.log("Ща будет записть\n", newQuest);
     try {
         db.ref(`parks/${name}/Quests/${newQuest.TaskName}`).set(newQuest, function (error) {
             if (error) {
-                //res.sendStatus(404)
+                return res.sendStatus(404)
                 // The write failed...
-                console.log("Failed with error: " + error)
+                //console.log("Failed with error: " + error)
             } else {
-                //res.sendStatus(204)
+                return res.sendStatus(204)
                 // The write was successful...
                 //console.log("success\n", ind)
             }
         })
     }
    catch (err){
-
-        console.log(err)}
+       if (err) {
+           return res.sendStatus(404)
+           // The write failed...
+           //console.log("Failed with error: " + error)
+       }
+    }
+       //console.log(err)}
 
     //db.ref(`parks/${name}/Quests/`).push(newQuest)
 

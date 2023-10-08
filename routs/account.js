@@ -74,7 +74,8 @@ router.post('/auth', (req, res) => {
         })
     }
     catch (err){
-        console.log("ACC Все упало, мы все упали" + err)
+        console.log("A Все упало, мы все упали" + err)
+        return res.sendStatus(404)
     }
 
 })
