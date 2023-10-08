@@ -56,7 +56,7 @@ router.delete('/parks/:name/Quests/:ind', (req, res) => {
 })
 
 // TODO Изменения
-router.post('/:parkName/:Coast/:Code/:Description/:IsStandartQuest/:TaskName', (req, res) => {
+router.get('/:parkName/:Coast/:Code/:Description/:IsStandartQuest/:TaskName', (req, res) => {
     console.log("рабоает")
     let url = req.url.split('/');
     let name = url[1];
@@ -83,7 +83,7 @@ router.post('/:parkName/:Coast/:Code/:Description/:IsStandartQuest/:TaskName', (
                 // The write failed...
                 //console.log("Failed with error: " + error)
             } else {
-                return res.sendStatus(204)
+                return res.sendStatus(200)
                 // The write was successful...
                 //console.log("success\n", ind)
             }

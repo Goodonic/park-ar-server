@@ -28,7 +28,7 @@ app.listen(port, () => {
 })
 
 
-app.use('/account', account);
+app.use('/route/account', account);
 
 app.use('/route/quests', quests);
 app.use('/route/events', events);
