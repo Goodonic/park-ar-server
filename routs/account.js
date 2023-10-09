@@ -9,7 +9,7 @@ const db = require("../config/initDb")
 
 function getParkByName(name, callback)  {
     try {
-        db.ref(`parks/${name}`).on('value', (snapshot) => {
+        db.ref(`parks/${name}`).once('value', (snapshot) => {
             if(snapshot.val()!=null){
                 console.log("снапшот отправлен")
                 return callback(snapshot.val())
