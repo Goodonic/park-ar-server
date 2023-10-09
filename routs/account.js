@@ -79,8 +79,8 @@ router.post('/auth', (req, res) => {
     }
 
 })
-router.get("/admin", passport.authenticate("jwt", {sassion: false}), (req, res) =>{
-
-})
+// router.get("/admin", passport.authenticate("jwt", {sassion: false}), (req, res) =>{
+//
+// })
 
 module.exports = router;
