@@ -87,7 +87,7 @@ router.post('/:parkName', (req, res) => {
                 // return
                 //return res.sendStatus(200)
                 // The write was successful...
-                console.log("success\n", ind)
+                console.log("success\n", newQuest.TaskName)
             }
         })
     }
