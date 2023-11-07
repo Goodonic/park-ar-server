@@ -64,7 +64,7 @@ router.post('/:parkName', (req, res) => {
         "Event/Description": newEvent.Description,
 
     })
-    res.status(200)
+    res.sendStatus(200)
     //db.ref(`parks/${name}/Quests/`).push(newQuest)
     return;
 });

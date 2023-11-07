@@ -57,6 +57,8 @@ router.delete('/parks/:name/ModelPark/:ind', (req, res) => {
         "Location/Latitude": '',
         "Location/Longitude": '',
 
+    }, ()=>{
+        res.sendStatus(204)
     })
 
 
@@ -82,7 +84,10 @@ router.post('/:parkName', (req, res) => {
         "ID": newObj.Ind,
         "Location/Latitude": newObj.Lat,
         "Location/Longitude": newObj.Long,
-    })
+    },
+        ()=>{
+        res.sendStatus(204)
+        })
 
     //db.ref(`parks/${name}/Quests/`).push(newQuest)
 

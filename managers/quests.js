@@ -55,7 +55,7 @@ router.delete('/parks/:name/Quests/:ind', (req, res) => {
 
 })
 
-// TODO Изменения
+
 router.post('/:parkName', (req, res) => {
     console.log("рабоает")
     let url = req.url.split('/');

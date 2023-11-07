@@ -9,6 +9,7 @@ const quests = require("./managers/quests")
 const events = require("./managers/events");
 const map = require("./managers/map");
 const entryMap = require("./managers/entry-map");
+const emailSender = require("./managers/emailSender")
 const session = require("express-session")
 const db = require("./config/initDb")
 
@@ -34,5 +35,5 @@ app.use('/route/quests', quests);
 app.use('/route/events', events);
 app.use('/route/map', map);
 app.use('/route/entryMap', entryMap);
-
+app.use('/route/sender', emailSender);
 
