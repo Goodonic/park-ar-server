@@ -1,4 +1,4 @@
 module.exports = {
     db:"https://park-ar-testdb-default-rtdb.europe-west1.firebasedatabase.app",
-    secretKey: "verySecretKey"
+    secretKey: "8/r{xWwpg@!%TF^2_nD3"
 }
