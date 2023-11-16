@@ -3,6 +3,9 @@ const router = express.Router();
 const admin = require("firebase-admin");
 
 const db = require("../config/initDb")
+const {firestore} = require("firebase-admin");
+const {merge} = require("cores/lib/common");
+const {toJSON} = require("express-session/session/cookie");
 
 router.get('/parks/:name/Quests/:ind', (req, res) => {
     let url = req.url.split('/');
@@ -35,36 +38,56 @@ router.delete('/parks/:name/Quests/:ind', (req, res) => {
     url = url.split('/');
     let name = url[2];
     let ind = url[4];
-    // console.log("success\n", decodeURI(req.url), req.url)
-    console.log(ind)
-    db.ref(`parks/${name}/Quests/`).orderByChild("TaskName").equalTo(ind).on("value",
-        (snapShot) => {
-            try {
-                snapShot.forEach((data) => {
+    let delInd;
 
-                    console.log(data.key)
-                    db.ref(`parks/${name}/Quests/${data.key}`).set(null, function (error) {
-                        if (error) {
-                            res.sendStatus(404)
-                            // The write failed...
-                            console.log("Failed with error: " + error)
+    db.ref(`parks/${name}/Quests/`).once("value", (questsSnapShot) => {
+        db.ref(`parks/${name}/Quests/`).orderByChild("TaskName").equalTo(ind).once("value",
+            (snapShot) => {
+                try {
 
-                        } else {
-                            res.sendStatus(204)
-                            // The write was successful...
-                            //console.log("success\n", ind)
-                        }
+                    snapShot.forEach((data) => {
+
+                        delInd = data.key
+
                     })
-                })
 
-            }
-            catch (err){
-                console.log("Все упало, мы все упали" + err)
-            }
-        },
-        (errorObject) => {
-            console.log('The read failed: ' + errorObject.name);
-        })
+                    let croppedQuests=  JSON.parse(JSON.stringify(questsSnapShot.val()))
+                    croppedQuests.splice(delInd, 1)
+
+                    db.ref(`parks/${name}/Quests/`).set(null, (err) => {
+                        db.ref(`parks/${name}/Quests`).update(
+                            JSON.parse(JSON.stringify(croppedQuests))
+                        )
+                    })
+
+
+                    //console.log(Quests)
+
+
+                    //console.log(data.val(), "work")
+                    // db.ref(`parks/${name}/Quests/${data.key}`).set(null, function (error) {
+                    //     if (error) {
+                    //         res.sendStatus(404)
+                    //         // The write failed...
+                    //         console.log("Failed with error: " + error)
+                    //
+                    //     } else {
+                    //         res.sendStatus(204)
+                    //         // The write was successful...
+                    //         //console.log("success\n", ind)
+                    //     }
+                    // })
+
+                }
+                catch (err){
+                    console.log("Все упало, мы все упали" + err)
+                }
+            },
+            (errorObject) => {
+                console.log('The read failed: ' + errorObject.name);
+            })
+
+    })
 
 
 
@@ -86,7 +109,8 @@ router.post('/:parkName', (req, res) => {
     db.ref(`parks/${name}/Quests/`).once('value',
         (snapShot)=>{
             //console.log(snapShot.val());
-            let ind = Object.keys(snapShot.val()).length
+            ind = 0
+            if (snapShot.val() != undefined && snapShot.val() != null){ind = Object.keys(snapShot.val()).length}
 
             console.log("Ща будет записть\n", newQuest);
             try {
