@@ -57,7 +57,11 @@ router.delete('/parks/:name/Quests/:ind', (req, res) => {
                     db.ref(`parks/${name}/Quests/`).set(null, (err) => {
                         db.ref(`parks/${name}/Quests`).update(
                             JSON.parse(JSON.stringify(croppedQuests))
-                        )
+                        ).then(()=>{
+                            res.sendStatus(204)
+                        }).catch(()=>{
+                            res.sendStatus(404)
+                        })
                     })
 
 
@@ -107,36 +111,39 @@ router.post('/:parkName', (req, res) => {
         TaskName: req.body.TaskName,
     };
     db.ref(`parks/${name}/Quests/`).once('value',
-        (snapShot)=>{
+        (snapShot)=> {
             //console.log(snapShot.val());
             ind = 0
-            if (snapShot.val() != undefined && snapShot.val() != null){ind = Object.keys(snapShot.val()).length}
-
-            console.log("Ща будет записть\n", newQuest);
-            try {
-                db.ref(`parks/${name}/Quests/${ind}`).set(newQuest, function (error) {
-                    if (error) {
-                        return res.sendStatus(404)
-                        // The write failed...
-                        console.log("Failed with error: " + error)
-                    } else {
-                        return res.sendStatus(200)
-                        // The write was successful...
-                        console.log("success\n", newQuest.TaskName)
-                    }
-                })
+            if (snapShot.val() != undefined && snapShot.val() != null) {
+                ind = Object.keys(snapShot.val()).length
             }
-            catch (err){
-                if (err) {
+        }
+          ).then( ()=>{console.log("Ща будет записть\n", newQuest);
+        try {
+            db.ref(`parks/${name}/Quests/${ind}`).set(newQuest, function (error) {
+                if (error) {
                     return res.sendStatus(404)
                     // The write failed...
                     console.log("Failed with error: " + error)
+                } else {
+                    return res.sendStatus(200)
+                    // The write was successful...
+                    console.log("success\n", newQuest.TaskName)
                 }
+            })
+            //return res.sendStatus(200)
+        }
+        catch (err){
+            if (err) {
+                return res.sendStatus(404)
+                // The write failed...
+                console.log("Failed with error: " + error)
             }
-        },
-        (errorObject) => {
-            console.log('The read failed: ' + errorObject.name);
-        })
+        }
+    },
+    (errorObject) => {
+        console.log('The read failed: ' + errorObject.name);
+    })
 
        //console.log(err)}
 
