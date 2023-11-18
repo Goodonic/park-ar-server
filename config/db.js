@@ -1,4 +1,4 @@
 module.exports = {
-    db:"https://test-8afec-default-rtdb.firebaseio.com/",
+    db:"https://parkar-290bb-default-rtdb.asia-southeast1.firebasedatabase.app/",
     secretKey: "8/r{xWwpg@!%TF^2_nD3"
 }
